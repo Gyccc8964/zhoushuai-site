@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>周俊 | 个人网站</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
-            font-family: 'Noto Sans SC', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
             background: #0a0a0f;
             color: #fff;
             overflow-x: hidden;
@@ -46,7 +44,7 @@
             transition: 0.3s;
         }
         .navbar .logo {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Segoe UI', -apple-system, sans-serif;
             font-size: 1.6rem;
             font-weight: 900;
             background: linear-gradient(135deg, #00f0ff, #ff00e4);
@@ -119,7 +117,7 @@
         }
 
         .section-title {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Segoe UI', -apple-system, sans-serif;
             font-size: 2.8rem;
             font-weight: 900;
             margin-bottom: 60px;
@@ -149,26 +147,40 @@
             justify-content: center;
             text-align: center;
             padding-top: 80px;
+            position: relative;
+            overflow: hidden;
         }
         .hero-content { position: relative; z-index: 2; }
-        .hero-content .avatar {
-            width: 180px;
-            height: 180px;
+
+        /* Avatar ring glow */
+        .avatar-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+        .avatar-wrapper .ring {
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            background: conic-gradient(#00f0ff, #ff00e4, #00f0ff, #ff00e4, #00f0ff) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: spin 4s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .avatar-wrapper .avatar {
+            width: 160px; height: 160px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid #00f0ff;
-            box-shadow: 0 0 40px rgba(0,240,255,0.3),
-                        0 0 80px rgba(0,240,255,0.1);
-            margin-bottom: 30px;
+            display: block;
             transition: 0.5s;
         }
-        .hero-content .avatar:hover {
-            box-shadow: 0 0 60px rgba(0,240,255,0.5),
-                        0 0 120px rgba(255,0,228,0.2);
-            transform: scale(1.03);
-        }
+        .avatar-wrapper .avatar:hover { transform: scale(1.05); }
+
         .hero-content h1 {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Segoe UI', -apple-system, sans-serif;
             font-size: 4.5rem;
             font-weight: 900;
             background: linear-gradient(135deg, #00f0ff 0%, #ff00e4 50%, #00f0ff 100%);
@@ -176,46 +188,105 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: shimmer 3s linear infinite;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+            line-height: 1.1;
         }
         @keyframes shimmer {
             0% { background-position: 0% center; }
             100% { background-position: 200% center; }
         }
         .hero-content .subtitle {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: #888;
             letter-spacing: 4px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .hero-content .tagline {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #555;
-            margin-bottom: 40px;
+            margin-bottom: 25px;
         }
-        .hero-content .tagline span {
-            color: #00f0ff;
-            position: relative;
+        .hero-content .tagline span { color: #00f0ff; }
+
+        /* Sticker badges */
+        .sticker-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        .hero-content .tagline span::after {
-            content: '';
-            position: absolute;
-            bottom: -2px; left: 0; right: 0;
-            height: 1px;
-            background: #00f0ff;
+        .sticker {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid #222;
+            color: #ccc;
+            transition: all 0.3s;
+            cursor: default;
+            animation: floatSticker 3s ease-in-out infinite;
         }
+        .sticker:nth-child(2) { animation-delay: 0.3s; }
+        .sticker:nth-child(3) { animation-delay: 0.6s; }
+        .sticker:nth-child(4) { animation-delay: 0.9s; }
+        .sticker:nth-child(5) { animation-delay: 1.2s; }
+        .sticker:nth-child(6) { animation-delay: 1.5s; }
+        .sticker:nth-child(7) { animation-delay: 1.8s; }
+        .sticker:nth-child(8) { animation-delay: 2.1s; }
+        .sticker:hover {
+            border-color: #00f0ff;
+            background: rgba(0,240,255,0.1);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 5px 20px rgba(0,240,255,0.15);
+        }
+        @keyframes floatSticker {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        /* Hero stats row */
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0 30px;
+        }
+        .hero-stats .stat-item {
+            text-align: center;
+        }
+        .hero-stats .stat-item .num {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00f0ff, #ff00e4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-stats .stat-item .label {
+            font-size: 0.7rem;
+            color: #666;
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+
         .btn {
             display: inline-block;
-            padding: 14px 40px;
+            padding: 12px 36px;
             border: 2px solid #00f0ff;
             color: #00f0ff;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             letter-spacing: 3px;
             transition: 0.3s;
             position: relative;
             overflow: hidden;
-            margin: 0 10px;
+            margin: 0 8px;
         }
         .btn::before {
             content: '';
@@ -243,37 +314,59 @@
             color: #0a0a0f;
             box-shadow: 0 0 30px rgba(255,0,228,0.3);
         }
+
+        /* Floating decorations */
+        .float-deco {
+            position: absolute;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.3;
+            font-size: 2.5rem;
+            animation: floatDrift 8s ease-in-out infinite;
+        }
+        .float-deco:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+        .float-deco:nth-child(2) { top: 20%; right: 8%; animation-delay: 1.5s; }
+        .float-deco:nth-child(3) { top: 60%; left: 3%; animation-delay: 3s; }
+        .float-deco:nth-child(4) { bottom: 25%; right: 5%; animation-delay: 4.5s; }
+        .float-deco:nth-child(5) { top: 40%; left: 2%; animation-delay: 2s; font-size: 1.8rem; }
+        .float-deco:nth-child(6) { bottom: 40%; right: 3%; animation-delay: 5s; font-size: 1.8rem; }
+        @keyframes floatDrift {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(5deg); }
+            75% { transform: translateY(10px) rotate(-3deg); }
+        }
+
         .scroll-indicator {
             position: absolute;
-            bottom: 40px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 2;
         }
         .scroll-indicator .mouse {
-            width: 26px; height: 40px;
-            border: 2px solid #555;
-            border-radius: 13px;
-            margin: 0 auto 8px;
+            width: 24px; height: 36px;
+            border: 2px solid #444;
+            border-radius: 12px;
+            margin: 0 auto 6px;
             position: relative;
         }
         .scroll-indicator .mouse::after {
             content: '';
             position: absolute;
-            top: 8px; left: 50%;
+            top: 6px; left: 50%;
             transform: translateX(-50%);
-            width: 3px; height: 8px;
+            width: 3px; height: 7px;
             background: #00f0ff;
             border-radius: 2px;
             animation: scrollAnim 2s infinite;
         }
         @keyframes scrollAnim {
             0% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            100% { opacity: 0; transform: translateX(-50%) translateY(15px); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(12px); }
         }
         .scroll-indicator p {
-            color: #555;
-            font-size: 0.7rem;
+            color: #444;
+            font-size: 0.65rem;
             letter-spacing: 2px;
         }
 
@@ -367,7 +460,7 @@
             box-shadow: 0 0 10px rgba(0,240,255,0.3);
         }
         .timeline-item .date {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Segoe UI', -apple-system, sans-serif;
             font-size: 0.8rem;
             color: #00f0ff;
             margin-bottom: 5px;
@@ -420,7 +513,7 @@
             border: 1px solid #1a1a2e;
             cursor: pointer;
         }
-        .gallery-item img {
+        .gallery-item .gallery-bg {
             width: 100%; height: 100%;
             object-fit: cover;
             transition: 0.5s;
@@ -434,7 +527,7 @@
             transition: 0.4s;
         }
         .gallery-item:hover .overlay { transform: translateY(0); }
-        .gallery-item:hover img { transform: scale(1.1); }
+        .gallery-item:hover .gallery-bg { transform: scale(1.1); }
         .gallery-item .overlay h4 { font-size: 1rem; margin-bottom: 4px; }
         .gallery-item .overlay p { color: #aaa; font-size: 0.8rem; }
 
@@ -527,7 +620,7 @@
             position: fixed;
             bottom: 20px; right: 20px;
             z-index: 99;
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Segoe UI', -apple-system, sans-serif;
             font-size: 0.6rem;
             color: #333;
             letter-spacing: 1px;
@@ -558,16 +651,62 @@
 
     <!-- Hero -->
     <section id="hero">
+        <!-- Floating decorations -->
+        <div class="float-deco">🥡</div>
+        <div class="float-deco">⚡</div>
+        <div class="float-deco">🎮</div>
+        <div class="float-deco">☕</div>
+        <div class="float-deco">🐛</div>
+        <div class="float-deco">🛌</div>
+
         <div class="hero-content">
-            <img src="https://api.dicebear.com/9.x/adventurer/svg?seed=ZhouJun&backgroundColor=transparent&hair=short&eyes=variant26&mouth=smile&skinColor=f5d0b0" alt="avatar" class="avatar">
+            <div class="avatar-wrapper">
+                <div class="ring"></div>
+                <img src="photo1.jpg" alt="avatar" class="avatar">
+            </div>
+
             <h1 class="glitch" data-text="周 俊">周 俊</h1>
             <p class="subtitle">🔧 假装工程师 · 专业摸鱼选手</p>
-            <p class="tagline">185 劫瓦双休 <span>男大</span> · 主业：偷外卖 · 副业：写 BUG</p>
-            <div style="margin-top: 30px;">
+            <p class="tagline">185 劫瓦双休 男大 · 主业偷外卖 副业写 BUG</p>
+
+            <!-- Sticker Cloud -->
+            <div class="sticker-cloud">
+                <span class="sticker">🏀 185cm</span>
+                <span class="sticker">⚡ 劫瓦双休</span>
+                <span class="sticker">🥡 外卖杀手</span>
+                <span class="sticker">💻 假装 Coding</span>
+                <span class="sticker">🎮 峡谷王者</span>
+                <span class="sticker">☕ 咖啡续命</span>
+                <span class="sticker">🐛 专业 BUG 制造</span>
+                <span class="sticker">🛌 周末躺平学</span>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="num">185</div>
+                    <div class="label">身高 cm</div>
+                </div>
+                <div class="stat-item">
+                    <div class="num">99</div>
+                    <div class="label">外卖偷取成功率 %</div>
+                </div>
+                <div class="stat-item">
+                    <div class="num">7</div>
+                    <div class="label">连续摸鱼天数</div>
+                </div>
+                <div class="stat-item">
+                    <div class="num">3</div>
+                    <div class="label">每天 BUG 产出</div>
+                </div>
+            </div>
+
+            <div>
                 <a href="#about" class="btn">了解我</a>
                 <a href="#contact" class="btn btn-alt">联系我</a>
             </div>
         </div>
+
         <div class="scroll-indicator">
             <div class="mouse"></div>
             <p>向下滚动</p>
@@ -580,7 +719,7 @@
         <div class="about-grid">
             <div class="about-image">
                 <div class="glow-box"></div>
-                <img src="https://api.dicebear.com/9.x/adventurer/svg?seed=ZhouJun&backgroundColor=transparent&hair=short&eyes=variant26&mouth=smile&skinColor=f5d0b0" alt="周俊">
+                <img src="photo2.jpg" alt="周俊">
             </div>
             <div class="about-text reveal">
                 <h3>身高 <span>185</span>  · 劫瓦双休 · <span>男大</span></h3>
@@ -677,28 +816,28 @@
         <h2 class="section-title"><span>作品</span>展示</h2>
         <div class="gallery-grid">
             <div class="gallery-item reveal">
-                <img src="https://picsum.photos/seed/work1/600/400" alt="项目1">
+                <div class="gallery-bg" style="background: linear-gradient(135deg, #667eea, #764ba2); display:flex; align-items:center; justify-content:center; font-size:4rem;">🤖</div>
                 <div class="overlay">
                     <h4>🤖 自动回复机器人</h4>
                     <p>用来应付老师和老板的神器，支持自定义话术库</p>
                 </div>
             </div>
             <div class="gallery-item reveal">
-                <img src="https://picsum.photos/seed/work2/600/400" alt="项目2">
+                <div class="gallery-bg" style="background: linear-gradient(135deg, #f093fb, #f5576c); display:flex; align-items:center; justify-content:center; font-size:4rem;">📊</div>
                 <div class="overlay">
                     <h4>📊 外卖战绩统计系统</h4>
                     <p>记录和分析每一单"误拿"外卖的数据看板</p>
                 </div>
             </div>
             <div class="gallery-item reveal">
-                <img src="https://picsum.photos/seed/work3/600/400" alt="项目3">
+                <div class="gallery-bg" style="background: linear-gradient(135deg, #4facfe, #00f2fe); display:flex; align-items:center; justify-content:center; font-size:4rem;">🖥️</div>
                 <div class="overlay">
                     <h4>🖥️ 摸鱼进度条</h4>
                     <p>假装在工作的桌面小工具，老板来了自动切换页面</p>
                 </div>
             </div>
             <div class="gallery-item reveal">
-                <img src="https://picsum.photos/seed/work4/600/400" alt="项目4">
+                <div class="gallery-bg" style="background: linear-gradient(135deg, #a18cd1, #fbc2eb); display:flex; align-items:center; justify-content:center; font-size:4rem;">🌐</div>
                 <div class="overlay">
                     <h4>🌐 个人网站</h4>
                     <p>就是你现在看到的这个，用 Claude 3 分钟写好</p>
