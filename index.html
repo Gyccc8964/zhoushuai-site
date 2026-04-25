@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>周俊 | 个人网站</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ===== Particles Canvas ===== */
+        #particles-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ===== Scrollbar ===== */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0f; }
+        ::-webkit-scrollbar-thumb { background: #00f0ff; border-radius: 4px; }
+
+        /* ===== Navigation ===== */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10,10,15,0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,240,255,0.1);
+            transition: 0.3s;
+        }
+        .navbar .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00f0ff, #ff00e4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .navbar .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+        .navbar .nav-links a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            position: relative;
+        }
+        .navbar .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background: #00f0ff;
+            transition: 0.3s;
+        }
+        .navbar .nav-links a:hover { color: #fff; }
+        .navbar .nav-links a:hover::after { width: 100%; }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .hamburger span {
+            width: 28px; height: 2px;
+            background: #fff;
+            transition: 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .navbar { padding: 15px 20px; }
+            .navbar .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px; left: 0; right: 0;
+                flex-direction: column;
+                background: rgba(10,10,15,0.95);
+                padding: 20px;
+                text-align: center;
+                border-bottom: 1px solid #00f0ff33;
+            }
+            .navbar .nav-links.open { display: flex; }
+            .hamburger { display: flex; }
+        }
+
+        /* ===== Sections common ===== */
+        section {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            padding: 120px 50px 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        @media (max-width: 768px) {
+            section { padding: 100px 20px 60px; }
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 60px;
+            text-align: center;
+            position: relative;
+        }
+        .section-title span {
+            background: linear-gradient(135deg, #00f0ff, #ff00e4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #00f0ff, #ff00e4);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+
+        /* ===== Hero ===== */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 80px;
+        }
+        .hero-content { position: relative; z-index: 2; }
+        .hero-content .avatar {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #00f0ff;
+            box-shadow: 0 0 40px rgba(0,240,255,0.3),
+                        0 0 80px rgba(0,240,255,0.1);
+            margin-bottom: 30px;
+            transition: 0.5s;
+        }
+        .hero-content .avatar:hover {
+            box-shadow: 0 0 60px rgba(0,240,255,0.5),
+                        0 0 120px rgba(255,0,228,0.2);
+            transform: scale(1.03);
+        }
+        .hero-content h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00f0ff 0%, #ff00e4 50%, #00f0ff 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+            margin-bottom: 15px;
+        }
+        @keyframes shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+        .hero-content .subtitle {
+            font-size: 1.3rem;
+            color: #888;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+        .hero-content .tagline {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 40px;
+        }
+        .hero-content .tagline span {
+            color: #00f0ff;
+            position: relative;
+        }
+        .hero-content .tagline span::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; left: 0; right: 0;
+            height: 1px;
+            background: #00f0ff;
+        }
+        .btn {
+            display: inline-block;
+            padding: 14px 40px;
+            border: 2px solid #00f0ff;
+            color: #00f0ff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            margin: 0 10px;
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,240,255,0.15), transparent);
+            transition: 0.5s;
+        }
+        .btn:hover::before { left: 100%; }
+        .btn:hover {
+            background: #00f0ff;
+            color: #0a0a0f;
+            box-shadow: 0 0 30px rgba(0,240,255,0.3);
+        }
+        .btn-alt {
+            border-color: #ff00e4;
+            color: #ff00e4;
+        }
+        .btn-alt::before {
+            background: linear-gradient(90deg, transparent, rgba(255,0,228,0.15), transparent);
+        }
+        .btn-alt:hover {
+            background: #ff00e4;
+            color: #0a0a0f;
+            box-shadow: 0 0 30px rgba(255,0,228,0.3);
+        }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+        .scroll-indicator .mouse {
+            width: 26px; height: 40px;
+            border: 2px solid #555;
+            border-radius: 13px;
+            margin: 0 auto 8px;
+            position: relative;
+        }
+        .scroll-indicator .mouse::after {
+            content: '';
+            position: absolute;
+            top: 8px; left: 50%;
+            transform: translateX(-50%);
+            width: 3px; height: 8px;
+            background: #00f0ff;
+            border-radius: 2px;
+            animation: scrollAnim 2s infinite;
+        }
+        @keyframes scrollAnim {
+            0% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(15px); }
+        }
+        .scroll-indicator p {
+            color: #555;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+        }
+
+        /* ===== About ===== */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 50px;
+            align-items: start;
+        }
+        .about-image {
+            position: relative;
+        }
+        .about-image img {
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid rgba(0,240,255,0.2);
+            transition: 0.3s;
+        }
+        .about-image img:hover {
+            border-color: #00f0ff;
+            box-shadow: 0 0 30px rgba(0,240,255,0.15);
+        }
+        .about-image .glow-box {
+            position: absolute;
+            top: -10px; left: -10px; right: 10px; bottom: 10px;
+            border: 1px solid rgba(255,0,228,0.2);
+            border-radius: 10px;
+            z-index: -1;
+        }
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        .about-text h3 span { color: #00f0ff; }
+        .about-text p {
+            color: #999;
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+        }
+        .about-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 25px;
+        }
+        .about-tags .tag {
+            padding: 6px 18px;
+            border: 1px solid #333;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #aaa;
+            transition: 0.3s;
+        }
+        .about-tags .tag:hover {
+            border-color: #00f0ff;
+            color: #00f0ff;
+            box-shadow: 0 0 15px rgba(0,240,255,0.1);
+        }
+        @media (max-width: 768px) {
+            .about-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ===== Timeline ===== */
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0; bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #00f0ff, #ff00e4);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            padding-left: 30px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -33px;
+            top: 6px;
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            background: #0a0a0f;
+            border: 2px solid #00f0ff;
+            box-shadow: 0 0 10px rgba(0,240,255,0.3);
+        }
+        .timeline-item .date {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            color: #00f0ff;
+            margin-bottom: 5px;
+        }
+        .timeline-item h4 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        .timeline-item p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        /* ===== Skills ===== */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+        }
+        .skill-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #1a1a2e;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: 0.4s;
+            cursor: default;
+        }
+        .skill-card:hover {
+            border-color: #00f0ff;
+            transform: translateY(-8px);
+            box-shadow: 0 10px 40px rgba(0,240,255,0.1);
+        }
+        .skill-card .icon { font-size: 2.8rem; margin-bottom: 15px; }
+        .skill-card h4 { font-size: 1.1rem; margin-bottom: 8px; }
+        .skill-card p { color: #777; font-size: 0.85rem; }
+
+        /* ===== Gallery ===== */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .gallery-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            aspect-ratio: 16/10;
+            background: #111;
+            border: 1px solid #1a1a2e;
+            cursor: pointer;
+        }
+        .gallery-item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+        .gallery-item .overlay {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            transform: translateY(100%);
+            transition: 0.4s;
+        }
+        .gallery-item:hover .overlay { transform: translateY(0); }
+        .gallery-item:hover img { transform: scale(1.1); }
+        .gallery-item .overlay h4 { font-size: 1rem; margin-bottom: 4px; }
+        .gallery-item .overlay p { color: #aaa; font-size: 0.8rem; }
+
+        /* ===== Contact ===== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .contact-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #1a1a2e;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: 0.3s;
+        }
+        .contact-card:hover {
+            border-color: #ff00e4;
+            box-shadow: 0 5px 30px rgba(255,0,228,0.1);
+            transform: translateY(-4px);
+        }
+        .contact-card .icon { font-size: 2.2rem; margin-bottom: 12px; }
+        .contact-card h4 { font-size: 1rem; margin-bottom: 8px; color: #00f0ff; }
+        .contact-card p { color: #aaa; font-size: 0.9rem; }
+        .contact-card a { color: #aaa; text-decoration: none; transition: 0.3s; }
+        .contact-card a:hover { color: #fff; }
+
+        /* ===== Footer ===== */
+        footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid #1a1a2e;
+            color: #555;
+            font-size: 0.85rem;
+        }
+        footer span { color: #00f0ff; }
+
+        /* ===== Reveal Animation ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== Glitch text effect (for fun) ===== */
+        .glitch {
+            position: relative;
+        }
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0.7;
+        }
+        .glitch::before {
+            color: #ff00e4;
+            z-index: -1;
+            animation: glitch1 3s infinite;
+        }
+        .glitch::after {
+            color: #00f0ff;
+            z-index: -1;
+            animation: glitch2 3s infinite;
+        }
+        @keyframes glitch1 {
+            0%, 80%, 100% { transform: translate(0); }
+            85% { transform: translate(-3px, 2px); }
+            90% { transform: translate(2px, -1px); }
+            95% { transform: translate(-1px, 3px); }
+        }
+        @keyframes glitch2 {
+            0%, 80%, 100% { transform: translate(0); }
+            85% { transform: translate(3px, -2px); }
+            90% { transform: translate(-2px, 1px); }
+            95% { transform: translate(1px, -3px); }
+        }
+
+        .built-with {
+            position: fixed;
+            bottom: 20px; right: 20px;
+            z-index: 99;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.6rem;
+            color: #333;
+            letter-spacing: 1px;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Particles -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">✦ ZHOU</div>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#hero">首页</a></li>
+            <li><a href="#about">关于</a></li>
+            <li><a href="#experience">经历</a></li>
+            <li><a href="#skills">技能</a></li>
+            <li><a href="#gallery">作品</a></li>
+            <li><a href="#contact">联系</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section id="hero">
+        <div class="hero-content">
+            <img src="https://api.dicebear.com/9.x/adventurer/svg?seed=ZhouJun&backgroundColor=transparent&hair=short&eyes=variant26&mouth=smile&skinColor=f5d0b0" alt="avatar" class="avatar">
+            <h1 class="glitch" data-text="周 俊">周 俊</h1>
+            <p class="subtitle">🔧 假装工程师 · 专业摸鱼选手</p>
+            <p class="tagline">185 劫瓦双休 <span>男大</span> · 主业：偷外卖 · 副业：写 BUG</p>
+            <div style="margin-top: 30px;">
+                <a href="#about" class="btn">了解我</a>
+                <a href="#contact" class="btn btn-alt">联系我</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="mouse"></div>
+            <p>向下滚动</p>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+        <h2 class="section-title"><span>关于</span>我</h2>
+        <div class="about-grid">
+            <div class="about-image">
+                <div class="glow-box"></div>
+                <img src="https://api.dicebear.com/9.x/adventurer/svg?seed=ZhouJun&backgroundColor=transparent&hair=short&eyes=variant26&mouth=smile&skinColor=f5d0b0" alt="周俊">
+            </div>
+            <div class="about-text reveal">
+                <h3>身高 <span>185</span>  · 劫瓦双休 · <span>男大</span></h3>
+                <p>
+                    你好，我是周俊。一名伪装成 <strong>软件工程师</strong> 的在读大学生。
+                    身高 185cm，劫瓦双休（懂得都懂），江湖人称「外卖终结者」。
+                </p>
+                <p>
+                    我的职业生涯高光时刻：用一天时间学会了"Hello World"，用三天成功让编译器跑通。
+                    精通各种开发环境的安装与卸载，对 IDE 主题配色有独到见解。
+                    目前专注于研究——如何让代码在我不动的情况下看起来像在加班。
+                </p>
+                <p>
+                    <strong>人生信条：</strong> 能偷的外卖绝不自己买，能复制的代码绝不自己写。
+                </p>
+                <div class="about-tags">
+                    <span class="tag">🏀 185cm</span>
+                    <span class="tag">⚡ 劫瓦双休</span>
+                    <span class="tag">🥡 偷外卖</span>
+                    <span class="tag">💻 假装工程师</span>
+                    <span class="tag">🎮 峡谷召唤师</span>
+                    <span class="tag">☕ 咖啡续命</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience -->
+    <section id="experience">
+        <h2 class="section-title"><span>我的</span>经历</h2>
+        <div class="timeline">
+            <div class="timeline-item reveal">
+                <div class="date">2024 - 至今</div>
+                <h4>🧑‍💻 高级实习生（自封）</h4>
+                <p>某不知名互联网公司 · 主要负责蹭空调和下午茶，偶尔写两行代码证明存在感。</p>
+            </div>
+            <div class="timeline-item reveal">
+                <div class="date">2023 - 2024</div>
+                <h4>🎓 大学在读</h4>
+                <p>专业：计算机科学与技术（其实就是打游戏顺便学点编程）。GPA 刚好不挂科，擅长考前突击。</p>
+            </div>
+            <div class="timeline-item reveal">
+                <div class="date">2022 - 2023</div>
+                <h4>🥇 宿舍外卖大赛冠军</h4>
+                <p>以 0 失误的记录完成了整个学期的外卖偷取任务，被誉为「外卖界的忍者」。</p>
+            </div>
+            <div class="timeline-item reveal">
+                <div class="date">2021 - 2022</div>
+                <h4>⚡ 劫瓦双休研究员</h4>
+                <p>深度研究周末躺平学，发表论文《论双休日的正确打开方式——从周五晚到周日睡》。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills">
+        <h2 class="section-title"><span>核心</span>技能</h2>
+        <div class="skills-grid">
+            <div class="skill-card reveal">
+                <div class="icon">⌨️</div>
+                <h4>Ctrl+C / Ctrl+V</h4>
+                <p>大师级复制粘贴技术，Stack Overflow 十年老用户，GitHub Copilot 首席赞助商。</p>
+            </div>
+            <div class="skill-card reveal">
+                <div class="icon">🎨</div>
+                <h4>IDE 主题配置</h4>
+                <p>精通 VS Code 主题配色方案切换，写代码 5 分钟，调主题 2 小时。</p>
+            </div>
+            <div class="skill-card reveal">
+                <div class="icon">🐛</div>
+                <h4>Bug 制造</h4>
+                <p>每写 10 行代码稳定产出 3 个 Bug，修复率 30%（剩下的交给下一个人）。</p>
+            </div>
+            <div class="skill-card reveal">
+                <div class="icon">☕</div>
+                <h4>咖啡品鉴</h4>
+                <p>加班必备技能，能精准分辨公司 3 种速溶咖啡的细微区别。</p>
+            </div>
+            <div class="skill-card reveal">
+                <div class="icon">📱</div>
+                <h4>外卖雷达</h4>
+                <p>半径 500 米内外卖柜开启震动提醒，0.5 秒内完成"拿错"操作。</p>
+            </div>
+            <div class="skill-card reveal">
+                <div class="icon">🛌</div>
+                <h4>周末躺平学</h4>
+                <p>劫瓦双休专业户，周六日手机静音，消息免打扰，已获宿舍认证。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section id="gallery">
+        <h2 class="section-title"><span>作品</span>展示</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item reveal">
+                <img src="https://picsum.photos/seed/work1/600/400" alt="项目1">
+                <div class="overlay">
+                    <h4>🤖 自动回复机器人</h4>
+                    <p>用来应付老师和老板的神器，支持自定义话术库</p>
+                </div>
+            </div>
+            <div class="gallery-item reveal">
+                <img src="https://picsum.photos/seed/work2/600/400" alt="项目2">
+                <div class="overlay">
+                    <h4>📊 外卖战绩统计系统</h4>
+                    <p>记录和分析每一单"误拿"外卖的数据看板</p>
+                </div>
+            </div>
+            <div class="gallery-item reveal">
+                <img src="https://picsum.photos/seed/work3/600/400" alt="项目3">
+                <div class="overlay">
+                    <h4>🖥️ 摸鱼进度条</h4>
+                    <p>假装在工作的桌面小工具，老板来了自动切换页面</p>
+                </div>
+            </div>
+            <div class="gallery-item reveal">
+                <img src="https://picsum.photos/seed/work4/600/400" alt="项目4">
+                <div class="overlay">
+                    <h4>🌐 个人网站</h4>
+                    <p>就是你现在看到的这个，用 Claude 3 分钟写好</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+        <h2 class="section-title"><span>联系</span>方式</h2>
+        <div class="contact-grid">
+            <div class="contact-card reveal">
+                <div class="icon">📞</div>
+                <h4>电话</h4>
+                <p><a href="tel:17768309826">177-6830-9826</a></p>
+            </div>
+            <div class="contact-card reveal">
+                <div class="icon">📧</div>
+                <h4>邮箱</h4>
+                <p><a href="mailto:zhoushuai@example.com">zhoushuai@example.com</a></p>
+            </div>
+            <div class="contact-card reveal">
+                <div class="icon">💬</div>
+                <h4>微信</h4>
+                <p>ZhouJun_185</p>
+            </div>
+            <div class="contact-card reveal">
+                <div class="icon">🐙</div>
+                <h4>GitHub</h4>
+                <p><a href="https://github.com/ZhouJun" target="_blank">@ZhouJun</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 <span>周俊</span> · 用 ❤️ 和 🥡 外卖制作 · All Rights Reserved</p>
+        <p style="font-size:0.75rem; margin-top:5px; color:#333;">Built with Claude Code in 3 minutes</p>
+    </footer>
+
+    <div class="built-with">✦ BUILT WITH CLAUDE CODE</div>
+
+    <script>
+        // ===== Toggle Menu =====
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('open');
+        }
+        document.querySelectorAll('#navLinks a').forEach(a => {
+            a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+        });
+
+        // ===== Particles =====
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouseX = 0, mouseY = 0;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.5 + 0.1;
+                this.color = Math.random() > 0.5 ? '#00f0ff' : '#ff00e4';
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.reset();
+                }
+                // mouse interaction
+                const dx = mouseX - this.x;
+                const dy = mouseY - this.y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < 120) {
+                    const angle = Math.atan2(dy, dx);
+                    this.x -= Math.cos(angle) * 0.3;
+                    this.y -= Math.sin(angle) * 0.3;
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 120; i++) particles.push(new Particle());
+
+        function drawLines() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    if (dist < 130) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = dist > 100 ? '#00f0ff' : '#ff00e4';
+                        ctx.globalAlpha = (1 - dist/130) * 0.15;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            drawLines();
+            ctx.globalAlpha = 1;
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        document.addEventListener('mousemove', e => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        // ===== Reveal on Scroll =====
+        const revealEls = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        revealEls.forEach(el => observer.observe(el));
+
+        // ===== Random emoji trail on click (fun) =====
+        document.addEventListener('click', (e) => {
+            const emojis = ['🥡', '⚡', '💻', '🐛', '☕', '🎮', '🛌', '✨'];
+            const el = document.createElement('span');
+            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.cssText = `
+                position: fixed;
+                left: ${e.clientX}px;
+                top: ${e.clientY}px;
+                font-size: 1.5rem;
+                pointer-events: none;
+                z-index: 9999;
+                transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            `;
+            document.body.appendChild(el);
+            requestAnimationFrame(() => {
+                el.style.transform = `translateY(-80px) scale(1.5)`;
+                el.style.opacity = '0';
+            });
+            setTimeout(() => el.remove(), 1000);
+        });
+    </script>
+</body>
+</html>
