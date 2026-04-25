@@ -546,11 +546,13 @@
             padding: 30px;
             text-align: center;
             transition: 0.3s;
+            cursor: pointer;
         }
         .contact-card:hover {
             border-color: #ff00e4;
             box-shadow: 0 5px 30px rgba(255,0,228,0.1);
             transform: translateY(-4px);
+            background: rgba(255,255,255,0.06);
         }
         .contact-card .icon { font-size: 2.2rem; margin-bottom: 12px; }
         .contact-card h4 { font-size: 1rem; margin-bottom: 8px; color: #00f0ff; }
@@ -850,28 +852,28 @@
     <section id="contact">
         <h2 class="section-title"><span>联系</span>方式</h2>
         <div class="contact-grid">
-            <div class="contact-card reveal">
+            <div class="contact-card reveal" onclick="window.location.href='tel:17768309826'" style="cursor:pointer;">
                 <div class="icon">📞</div>
                 <h4>电话</h4>
-                <p><a href="tel:17768309826">177-6830-9826</a></p>
+                <p style="color:#00f0ff;">177-6830-9826</p>
                 <p style="font-size:0.75rem; color:#555; margin-top:4px;">点击直接拨打</p>
             </div>
-            <div class="contact-card reveal">
+            <div class="contact-card reveal" onclick="window.open('https://wpa.qq.com/msgrd?v=3&uin=2998077662&site=qq&menu=yes','_blank')" style="cursor:pointer;">
                 <div class="icon">💬</div>
                 <h4>QQ</h4>
-                <p><a href="https://wpa.qq.com/msgrd?v=3&uin=2998077662&site=qq&menu=yes" target="_blank">2998077662</a></p>
+                <p style="color:#00f0ff;">2998077662</p>
                 <p style="font-size:0.75rem; color:#555; margin-top:4px;">点击直接聊天</p>
             </div>
-            <div class="contact-card reveal">
+            <div class="contact-card reveal" onclick="copyWx()" style="cursor:pointer;">
                 <div class="icon">💚</div>
                 <h4>微信</h4>
-                <p><a href="weixin://dl/chat?ZhouJun_185" style="color:#aaa;">ZhouJun_185</a></p>
-                <p style="font-size:0.75rem; color:#555; margin-top:4px;">点击打开微信</p>
+                <p style="color:#00f0ff;">ZhouJun_185</p>
+                <p style="font-size:0.75rem; color:#555; margin-top:4px;" id="wxHint">点击复制微信号</p>
             </div>
-            <div class="contact-card reveal">
+            <div class="contact-card reveal" onclick="window.open('https://github.com/ZhouJun','_blank')" style="cursor:pointer;">
                 <div class="icon">🐙</div>
                 <h4>GitHub</h4>
-                <p><a href="https://github.com/ZhouJun" target="_blank">@ZhouJun</a></p>
+                <p style="color:#00f0ff;">@ZhouJun</p>
                 <p style="font-size:0.75rem; color:#555; margin-top:4px;">点击查看主页</p>
             </div>
         </div>
@@ -991,6 +993,28 @@
         }, { threshold: 0.15 });
 
         revealEls.forEach(el => observer.observe(el));
+
+        // ===== Copy WeChat =====
+        function copyWx() {
+            const text = 'ZhouJun_185';
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    const hint = document.getElementById('wxHint');
+                    hint.textContent = '✅ 已复制微信号';
+                    setTimeout(() => { hint.textContent = '点击复制微信号'; }, 2000);
+                });
+            } else {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                ta.remove();
+                const hint = document.getElementById('wxHint');
+                hint.textContent = '✅ 已复制微信号';
+                setTimeout(() => { hint.textContent = '点击复制微信号'; }, 2000);
+            }
+        }
 
         // ===== Random emoji trail on click (fun) =====
         document.addEventListener('click', (e) => {
