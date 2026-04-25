@@ -994,21 +994,9 @@
 
         revealEls.forEach(el => observer.observe(el));
 
-        // ===== Open QQ Friend =====
+        // ===== Open QQ =====
         function openQQ() {
-            var ua = navigator.userAgent;
-            var isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
-            if (isMobile) {
-                window.location.href = 'mqqwpa://im/chat?chat_type=wpa&uin=2998077662&version=1';
-                setTimeout(function() {
-                    window.open('https://wpa.qq.com/msgrd?v=3&uin=2998077662&site=qq&menu=yes', '_blank');
-                }, 1000);
-            } else {
-                window.location.href = 'tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=2998077662';
-                setTimeout(function() {
-                    window.open('https://wpa.qq.com/msgrd?v=3&uin=2998077662&site=qq&menu=yes', '_blank');
-                }, 1000);
-            }
+            window.open('https://wpa.qq.com/msgrd?v=3&uin=2998077662&site=qq&menu=yes', '_blank');
         }
 
         // ===== Copy WeChat =====
