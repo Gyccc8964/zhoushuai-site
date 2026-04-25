@@ -858,7 +858,7 @@
                 <p style="color:#00f0ff;">177-6830-9826</p>
                 <p style="font-size:0.75rem; color:#555; margin-top:4px;">点击直接拨打</p>
             </div>
-            <div class="contact-card reveal" onclick="window.open('https://qm.qq.com/q/2998077662','_blank')">
+            <div class="contact-card reveal" onclick="openQQ()">
                 <div class="icon">💬</div>
                 <h4>QQ</h4>
                 <p style="color:#00f0ff;">2998077662</p>
@@ -993,6 +993,23 @@
         }, { threshold: 0.15 });
 
         revealEls.forEach(el => observer.observe(el));
+
+        // ===== Open QQ Friend =====
+        function openQQ() {
+            var ua = navigator.userAgent;
+            var isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
+            if (isMobile) {
+                window.location.href = 'mqq://card/show_pslcard?uin=2998077662&card_type=friend';
+                setTimeout(function() {
+                    window.open('https://qm.qq.com/cgi-bin/qm/qr?k=2998077662&n=qq&friend=1', '_blank');
+                }, 500);
+            } else {
+                window.open('tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=2998077662', '_blank');
+                setTimeout(function() {
+                    window.open('https://qm.qq.com/cgi-bin/qm/qr?k=2998077662&n=qq&friend=1', '_blank');
+                }, 500);
+            }
+        }
 
         // ===== Copy WeChat =====
         function copyWx() {
