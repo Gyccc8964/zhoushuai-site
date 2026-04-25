@@ -862,7 +862,7 @@
                 <div class="icon">💬</div>
                 <h4>QQ</h4>
                 <p style="color:#00f0ff;">2998077662</p>
-                <p style="font-size:0.75rem; color:#555; margin-top:4px;">点击直接聊天</p>
+                <p style="font-size:0.75rem; color:#555; margin-top:4px;">点击加好友聊天</p>
             </div>
             <div class="contact-card reveal" onclick="copyWx()">
                 <div class="icon">💚</div>
@@ -999,15 +999,15 @@
             var ua = navigator.userAgent;
             var isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
             if (isMobile) {
-                window.location.href = 'mqq://card/show_pslcard?uin=2998077662&card_type=friend';
+                window.location.href = 'mqqwpa://im/chat?chat_type=wpa&uin=2998077662&version=1';
                 setTimeout(function() {
-                    window.open('https://qm.qq.com/cgi-bin/qm/qr?k=2998077662&n=qq&friend=1', '_blank');
-                }, 500);
+                    window.open('https://wpa.qq.com/msgrd?v=3&uin=2998077662&site=qq&menu=yes', '_blank');
+                }, 1000);
             } else {
-                window.open('tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=2998077662', '_blank');
+                window.location.href = 'tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=2998077662';
                 setTimeout(function() {
-                    window.open('https://qm.qq.com/cgi-bin/qm/qr?k=2998077662&n=qq&friend=1', '_blank');
-                }, 500);
+                    window.open('https://wpa.qq.com/msgrd?v=3&uin=2998077662&site=qq&menu=yes', '_blank');
+                }, 1000);
             }
         }
 
